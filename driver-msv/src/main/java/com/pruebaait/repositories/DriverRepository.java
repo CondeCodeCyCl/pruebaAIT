@@ -11,5 +11,4 @@ public interface DriverRepository extends JpaRepository<Driver, UUID> {
     // El examen pide: "Listar todos los conductores activos". 
     // Solo con escribir este nombre de método, Spring crea la consulta SQL por debajo:
     List<Driver> findByActiveTrue();
-
 }
