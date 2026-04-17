@@ -83,6 +83,11 @@ public class OrderServiceImpl implements OrderService {
 		order.setStatus(newStatus);
 
 		order.setUpdatedAt(LocalDateTime.now());
+		
+		// 🚨 SI LA ORDEN TERMINA, LIBERAMOS AL CONDUCTOR
+	    if (newStatus == Status.DELIVERED || newStatus == Status.CANCELLED) {
+	        driverClient.updateDriverStatus(order.getIdDriver(), true);
+	    }
 
 		log.info("Status actualizado exitosamente");
 		return orderMapper.entityToResponse(order);
