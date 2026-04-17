@@ -7,13 +7,11 @@ import com.pruebaait.enums.Status;
 
 public interface OrderService {
 
-	OrderResponse createDriver(OrderRequest request);
+	OrderResponse createOrder(OrderRequest request);
 
 	List<OrderResponse> getAllOrders();
 
-	OrderResponse getById(UUID id);
-
-	OrderResponse update(OrderRequest request, UUID id);
+	OrderResponse getOrderById(UUID id);
 
 	OrderResponse updateOrderStatus(UUID id, Status newStatus);
 }

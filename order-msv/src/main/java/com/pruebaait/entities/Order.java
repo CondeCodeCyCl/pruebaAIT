@@ -1,8 +1,6 @@
 package com.pruebaait.entities;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import com.pruebaait.enums.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -43,10 +41,8 @@ public class Order {
     @Column(nullable = false, length = 100)
     private String destination;
 
-    @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
     private LocalDateTime updatedAt;
 }
