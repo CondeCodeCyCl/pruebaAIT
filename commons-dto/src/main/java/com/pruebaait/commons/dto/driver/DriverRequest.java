@@ -1,4 +1,4 @@
-package com.pruebaait.dto;
+package com.pruebaait.commons.dto.driver;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

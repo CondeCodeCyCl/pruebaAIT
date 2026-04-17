@@ -1,7 +1,7 @@
 package com.pruebaait.services;
 import java.util.List;
-import com.pruebaait.dto.DriverRequest;
-import com.pruebaait.dto.DriverResponse;
+import com.pruebaait.commons.dto.driver.DriverRequest;
+import com.pruebaait.commons.dto.driver.DriverResponse;
 
 public interface DriverService{
 

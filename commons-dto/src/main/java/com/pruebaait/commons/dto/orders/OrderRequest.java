@@ -1,4 +1,4 @@
-package com.pruebaait.dto;
+package com.pruebaait.commons.dto.orders;
 import jakarta.validation.constraints.NotBlank;
 
 public record OrderRequest(

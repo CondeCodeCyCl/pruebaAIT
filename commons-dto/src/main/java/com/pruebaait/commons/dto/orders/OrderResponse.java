@@ -1,9 +1,8 @@
-package com.pruebaait.dto;
+package com.pruebaait.commons.dto.orders;
 import java.time.LocalDateTime;
 import java.util.UUID;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.pruebaait.enums.Status;
+import com.pruebaait.commons.enums.Status;
 
 public record OrderResponse(
 		UUID id,

@@ -1,7 +1,7 @@
 package com.pruebaait.entities;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import com.pruebaait.enums.Status;
+import com.pruebaait.commons.enums.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

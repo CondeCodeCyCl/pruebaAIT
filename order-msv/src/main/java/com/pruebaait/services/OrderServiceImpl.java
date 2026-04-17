@@ -1,15 +1,15 @@
 package com.pruebaait.services;
-
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.pruebaait.dto.OrderRequest;
-import com.pruebaait.dto.OrderResponse;
+import com.pruebaait.commons.dto.orders.OrderRequest;
+import com.pruebaait.commons.dto.orders.OrderResponse;
 import com.pruebaait.entities.Order;
-import com.pruebaait.enums.Status;
+import com.pruebaait.commons.enums.Status;
 import com.pruebaait.exceptions.RecursoNoEncontradoException;
 import com.pruebaait.mapper.OrderMapper;
 import com.pruebaait.repositories.OrderRepository;
@@ -103,31 +103,47 @@ public class OrderServiceImpl implements OrderService {
 
 		List<Order> ordersEntity = orderRepository.findByStatus(status);
 
-		return ordersEntity.stream()
-				.map(orderMapper::entityToResponse)
-				.collect(Collectors.toList());
+		return ordersEntity.stream().map(orderMapper::entityToResponse).collect(Collectors.toList());
 	}
 
 	@Override
-	public List<OrderResponse> findByOrigin(String origin) {
+	public List<OrderResponse> getOrderByOrigin(String origin) {
 		log.info("Buscando órdenes en la base de datos con origen: {}", origin);
 
-		List<Order> ordersEntity = orderRepository.findByOrigin(origin);
+		List<Order> ordersEntity = orderRepository.findByOriginContainingIgnoreCase(origin);
 
-		return ordersEntity.stream()
-				.map(orderMapper::entityToResponse)
-				.collect(Collectors.toList());
+		return ordersEntity.stream().map(orderMapper::entityToResponse).collect(Collectors.toList());
 	}
 
-	
-	public List<OrderResponse> findByDestination(String destination) {
+	@Override
+	public List<OrderResponse> getOrderByDestination(String destination) {
 		log.info("Buscando órdenes en la base de datos con destino: {}", destination);
 
-		List<Order> ordersEntity = orderRepository.findByDestination(destination);
+		List<Order> ordersEntity = orderRepository.findByDestinationContainingIgnoreCase(destination);
 
-		return ordersEntity.stream()
-				.map(orderMapper::entityToResponse)
-				.collect(Collectors.toList());
+		return ordersEntity.stream().map(orderMapper::entityToResponse).collect(Collectors.toList());
 	}
 
+	@Override
+	public List<OrderResponse> getOrderByStatus(Status status) {
+		log.info("Buscando órdenes en la base de datos con estatus: {}", status);
+
+		List<Order> ordersEntity = orderRepository.findByStatus(status);
+
+		return ordersEntity.stream().map(orderMapper::entityToResponse).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<OrderResponse> getOrderByFecha(LocalDate fecha) {
+		log.info("Buscando órdenes para el día: {}", fecha);
+
+	    // Creamos el rango: 2026-04-16 00:00:00.000 hasta 2026-04-16 23:59:59.999
+	    LocalDateTime inicio = fecha.atStartOfDay(); 
+	    LocalDateTime fin = fecha.atTime(23, 59, 59, 999999999);
+
+	    return orderRepository.findByCreatedAtBetween(inicio, fin)
+	            .stream()
+	            .map(orderMapper::entityToResponse)
+	            .collect(Collectors.toList());
+	}
 }

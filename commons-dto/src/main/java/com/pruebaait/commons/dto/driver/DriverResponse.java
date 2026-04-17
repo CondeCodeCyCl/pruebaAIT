@@ -1,4 +1,4 @@
-package com.pruebaait.dto;
+package com.pruebaait.commons.dto.driver;
 import java.util.UUID;
 
 public record DriverResponse(

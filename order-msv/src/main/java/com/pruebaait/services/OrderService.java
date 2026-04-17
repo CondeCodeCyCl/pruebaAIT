@@ -1,9 +1,10 @@
 package com.pruebaait.services;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
-import com.pruebaait.dto.OrderRequest;
-import com.pruebaait.dto.OrderResponse;
-import com.pruebaait.enums.Status;
+import com.pruebaait.commons.dto.orders.OrderRequest;  
+import com.pruebaait.commons.dto.orders.OrderResponse;
+import com.pruebaait.commons.enums.Status;  
 
 public interface OrderService {
 
@@ -15,5 +16,11 @@ public interface OrderService {
 
 	OrderResponse updateOrderStatus(UUID id, Status newStatus);
 	
-	List<OrderResponse> findByOrigin(String origin);
+	List<OrderResponse> getOrderByOrigin(String origin);
+	
+	List<OrderResponse> getOrderByDestination(String destination);
+	
+	List<OrderResponse> getOrderByStatus(Status status);
+	
+	List<OrderResponse> getOrderByFecha(LocalDate fecha);
 }

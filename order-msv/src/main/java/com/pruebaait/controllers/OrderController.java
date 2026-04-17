@@ -1,6 +1,8 @@
 package com.pruebaait.controllers;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -12,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.pruebaait.dto.OrderRequest;
-import com.pruebaait.dto.OrderResponse;
-import com.pruebaait.enums.Status;
+import com.pruebaait.commons.dto.orders.OrderRequest;  
+import com.pruebaait.commons.dto.orders.OrderResponse;
+import com.pruebaait.commons.enums.Status;
 import com.pruebaait.services.OrderService;
 import lombok.RequiredArgsConstructor;
 
@@ -22,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/orders")
 @RequiredArgsConstructor
 @Validated
-public class OrderController {
+public class OrderController{
 	private final OrderService orderService;
 
 	@GetMapping()
@@ -37,9 +39,26 @@ public class OrderController {
 		return ResponseEntity.ok(orderService.getOrderById(id));
 	}
 	
-	@GetMapping("/filter/origin/{origin}")
-	public ResponseEntity<List<OrderResponse>>  getByOrigin(@PathVariable String origin) {
-        return ResponseEntity.ok(orderService.findByOrigin(origin));
+	@GetMapping("/filter/origin")
+	public ResponseEntity<List<OrderResponse>>  getOrderByOrigin(@RequestParam String origin) {
+        return ResponseEntity.ok(orderService.getOrderByOrigin(origin));
+	}
+	
+	@GetMapping("/filter/destination")
+	public ResponseEntity<List<OrderResponse>>  getOrderByDestination(@RequestParam String destination) {
+        return ResponseEntity.ok(orderService.getOrderByDestination(destination));
+	}
+	
+	@GetMapping("/filter/status")
+	public ResponseEntity<List<OrderResponse>>  getOrderByStatus(@RequestParam Status status) {
+        return ResponseEntity.ok(orderService.getOrderByStatus(status));
+	}
+	
+	
+	@GetMapping("/filter/fecha")
+	public ResponseEntity<List<OrderResponse>> getOrderByFecha(
+			@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {
+		return ResponseEntity.ok(orderService.getOrderByFecha(fecha));
 	}
 	
 

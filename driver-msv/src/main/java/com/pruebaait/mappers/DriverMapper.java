@@ -1,9 +1,7 @@
 package com.pruebaait.mappers;
-
 import org.springframework.stereotype.Component;
-
-import com.pruebaait.dto.DriverRequest;
-import com.pruebaait.dto.DriverResponse;
+import com.pruebaait.commons.dto.driver.DriverRequest;
+import com.pruebaait.commons.dto.driver.DriverResponse;
 import com.pruebaait.entities.Driver;
 
 @Component

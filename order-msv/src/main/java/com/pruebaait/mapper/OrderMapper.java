@@ -1,7 +1,7 @@
 package com.pruebaait.mapper;
 import org.springframework.stereotype.Component;
-import com.pruebaait.dto.OrderRequest;
-import com.pruebaait.dto.OrderResponse;
+import com.pruebaait.commons.dto.orders.OrderRequest;
+import com.pruebaait.commons.dto.orders.OrderResponse;
 import com.pruebaait.entities.Order;
 
 @Component
