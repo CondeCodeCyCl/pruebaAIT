@@ -12,6 +12,8 @@ public class OrderMapper {
         return Order.builder()
                 .origin(request.origin())
                 .destination(request.destination())
+    			    .idDriver(request.idDriver())
+
                 .build();
     }
 
@@ -23,6 +25,7 @@ public class OrderMapper {
                 entity.getStatus(),
                 entity.getOrigin(),
                 entity.getDestination(),
+                entity.getIdDriver(),
                 entity.getCreatedAt(),
                 entity.getUpdatedAt()
         );

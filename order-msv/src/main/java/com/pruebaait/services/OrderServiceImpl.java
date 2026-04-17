@@ -6,11 +6,13 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.pruebaait.commons.clients.DriverClient;
+import com.pruebaait.commons.dto.driver.DriverResponse;
 import com.pruebaait.commons.dto.orders.OrderRequest;
 import com.pruebaait.commons.dto.orders.OrderResponse;
 import com.pruebaait.entities.Order;
 import com.pruebaait.commons.enums.Status;
-import com.pruebaait.exceptions.RecursoNoEncontradoException;
+import com.pruebaait.commons.exceptions.*;
 import com.pruebaait.mapper.OrderMapper;
 import com.pruebaait.repositories.OrderRepository;
 import lombok.AllArgsConstructor;
@@ -24,15 +26,22 @@ public class OrderServiceImpl implements OrderService {
 
 	private final OrderRepository orderRepository;
 	private final OrderMapper orderMapper;
+	private final DriverClient driverClient;
 
 	@Override
 	public OrderResponse createOrder(OrderRequest request) {
 		log.info("Registrando nueva orden: {}", request);
+		
+	    DriverResponse driver = driverClient.getDriverById(request.idDriver());
+
+	   // Validamos que el conductor este activo.
+	    if (driver == null || Boolean.FALSE.equals(driver.active())) {
+	        throw new IllegalArgumentException("El conductor no está activo o no existe");
+	    }
 
 		Order order = orderMapper.requestToEntity(request);
-
-		// Toda orden nueva es CREATED
-		order.setStatus(Status.CREATED);
+		
+		order.setStatus(Status.CREATED); // Estado al crear por default es CREATED
 		order.setCreatedAt(LocalDateTime.now());
 		order.setUpdatedAt(LocalDateTime.now());
 

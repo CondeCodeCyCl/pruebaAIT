@@ -44,5 +44,9 @@ public class Order {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
+    @Column()
     private LocalDateTime updatedAt;
+    
+	@Column(name = "ID_DRIVER", nullable = false)
+    private UUID idDriver;
 }

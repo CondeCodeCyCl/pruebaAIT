@@ -1,4 +1,4 @@
-package com.pruebaait.exceptions;
+package com.pruebaait.commons.exceptions;
 
 public class RecursoNoEncontradoException extends RuntimeException{
 

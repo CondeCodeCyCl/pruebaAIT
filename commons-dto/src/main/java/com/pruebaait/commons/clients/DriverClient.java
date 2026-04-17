@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.pruebaait.commons.dto.driver.DriverResponse;
 
 
-@FeignClient(name = "driver-msv")
+@FeignClient(name = "driver-msv",url = "http://localhost:8081")
 public interface DriverClient {
 
-	@GetMapping("/api/drivers/{id}")
+	@GetMapping("{id}")
     DriverResponse getDriverById(@PathVariable UUID id);
 }

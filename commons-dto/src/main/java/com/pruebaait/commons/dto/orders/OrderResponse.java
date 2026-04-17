@@ -9,10 +9,10 @@ public record OrderResponse(
 		Status status,
 		String origin,
 		String destination,
+		UUID idDriver,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 		LocalDateTime createdAt,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 		LocalDateTime updatedAt
 		) {
-
 }
