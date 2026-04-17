@@ -14,4 +14,6 @@ public interface OrderService {
 	OrderResponse getOrderById(UUID id);
 
 	OrderResponse updateOrderStatus(UUID id, Status newStatus);
+	
+	List<OrderResponse> findByOrigin(String origin);
 }

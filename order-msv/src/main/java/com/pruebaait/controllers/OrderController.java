@@ -36,6 +36,12 @@ public class OrderController {
 	public ResponseEntity<OrderResponse> getOrderById(@PathVariable UUID id) {
 		return ResponseEntity.ok(orderService.getOrderById(id));
 	}
+	
+	@GetMapping("/filter/origin/{origin}")
+	public ResponseEntity<List<OrderResponse>>  getByOrigin(@PathVariable String origin) {
+        return ResponseEntity.ok(orderService.findByOrigin(origin));
+	}
+	
 
 	@PostMapping()
 	public ResponseEntity<OrderResponse> create(@Validated @RequestBody OrderRequest request) {

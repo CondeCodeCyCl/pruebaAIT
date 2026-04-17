@@ -1,4 +1,5 @@
 package com.pruebaait.services;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -34,7 +35,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setStatus(Status.CREATED);
 		order.setCreatedAt(LocalDateTime.now());
 		order.setUpdatedAt(LocalDateTime.now());
-		
+
 		log.info("Order registrado existosamente: {}", order);
 		return orderMapper.entityToResponse(orderRepository.save(order));
 	}
@@ -58,7 +59,8 @@ public class OrderServiceImpl implements OrderService {
 	private Order obtenerOrderOException(UUID id) {
 		log.info("Buscando order con id: {}", id);
 
-		return orderRepository.findById(id).orElseThrow(() -> new RecursoNoEncontradoException("Order con id: " + id));
+		return orderRepository.findById(id)
+				.orElseThrow(() -> new RecursoNoEncontradoException("Orden no encontrada con id: " + id));
 	}
 
 	@Override
@@ -66,10 +68,12 @@ public class OrderServiceImpl implements OrderService {
 
 		Order order = obtenerOrderOException(id);
 		log.info("Actualizando Order con id: {}", id);
-		
+
 		cambioStatus(order.getStatus(), newStatus);
 
 		order.setStatus(newStatus);
+
+		order.setUpdatedAt(LocalDateTime.now());
 
 		log.info("Status actualizado exitosamente");
 		return orderMapper.entityToResponse(order);
@@ -78,19 +82,52 @@ public class OrderServiceImpl implements OrderService {
 	private void cambioStatus(Status statusActual, Status statusNuevo) {
 		switch (statusActual) {
 		case CREATED:
-			if(statusNuevo != Status.IN_TRANSIT && statusNuevo != Status.CANCELLED) {
+			if (statusNuevo != Status.IN_TRANSIT && statusNuevo != Status.CANCELLED) {
 				throw new IllegalArgumentException("Una orden CREATED solo puede pasar a IN_TRANSIT o CANCELLED");
 			}
 			break;
-		case IN_TRANSIT: 
-		if(statusNuevo != Status.DELIVERED && statusNuevo != Status.CANCELLED) {
-			throw new IllegalArgumentException("Una orden IN_TRANSIT solo puede pasar a DELIVERED o CANCELLED");
-		}
+		case IN_TRANSIT:
+			if (statusNuevo != Status.DELIVERED && statusNuevo != Status.CANCELLED) {
+				throw new IllegalArgumentException("Una orden IN_TRANSIT solo puede pasar a DELIVERED o CANCELLED");
+			}
 			break;
 		case DELIVERED:
 		case CANCELLED:
-			throw new IllegalArgumentException("No se puede cambiar el estado de una orden finalizada a :" + statusActual);
+			throw new IllegalArgumentException(
+					"No se puede cambiar el estado de una orden finalizada a :" + statusActual);
+		}
 	}
-	}
-}
 
+	public List<OrderResponse> getOrdersByStatus(Status status) {
+		log.info("Buscando órdenes en la base de datos con status: {}", status);
+
+		List<Order> ordersEntity = orderRepository.findByStatus(status);
+
+		return ordersEntity.stream()
+				.map(orderMapper::entityToResponse)
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	public List<OrderResponse> findByOrigin(String origin) {
+		log.info("Buscando órdenes en la base de datos con origen: {}", origin);
+
+		List<Order> ordersEntity = orderRepository.findByOrigin(origin);
+
+		return ordersEntity.stream()
+				.map(orderMapper::entityToResponse)
+				.collect(Collectors.toList());
+	}
+
+	
+	public List<OrderResponse> findByDestination(String destination) {
+		log.info("Buscando órdenes en la base de datos con destino: {}", destination);
+
+		List<Order> ordersEntity = orderRepository.findByDestination(destination);
+
+		return ordersEntity.stream()
+				.map(orderMapper::entityToResponse)
+				.collect(Collectors.toList());
+	}
+
+}
