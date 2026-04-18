@@ -2,6 +2,7 @@ package com.pruebaait.commons.dto.orders;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.pruebaait.commons.dto.driver.DatosDriver;
 import com.pruebaait.commons.enums.Status;
 
 public record OrderResponse(
@@ -9,7 +10,7 @@ public record OrderResponse(
 		Status status,
 		String origin,
 		String destination,
-		UUID idDriver,
+		DatosDriver driver,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 		LocalDateTime createdAt,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm")

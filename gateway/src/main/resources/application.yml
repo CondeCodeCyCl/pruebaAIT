@@ -1,0 +1,33 @@
+spring:
+ application:
+  name: gateway
+
+ cloud:
+  loadbalancer:
+   enabled: true
+
+  gateway:
+   server:
+    webflux:
+     routes:
+      - id: msv-driver
+        uri: lb://msv-driver
+        predicates:
+         - Path=/api/drivers/**
+        #filters:
+         #- StripPrefix=2
+
+      - id: msv-order
+        uri: lb://msv-order
+        predicates:
+         - Path=/api/orders/**
+        #filters:
+         #- StripPrefix=2
+
+server:
+ port: 8090
+
+eureka:
+ client:
+  service-url:
+   defaultZone: http://localhost:8761/eureka

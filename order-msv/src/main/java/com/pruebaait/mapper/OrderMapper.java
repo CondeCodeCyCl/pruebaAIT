@@ -1,5 +1,7 @@
 package com.pruebaait.mapper;
 import org.springframework.stereotype.Component;
+import com.pruebaait.commons.dto.driver.DatosDriver;
+import com.pruebaait.commons.dto.driver.DriverResponse;
 import com.pruebaait.commons.dto.orders.OrderRequest;
 import com.pruebaait.commons.dto.orders.OrderResponse;
 import com.pruebaait.entities.Order;
@@ -17,7 +19,7 @@ public class OrderMapper {
                 .build();
     }
 
-    public OrderResponse entityToResponse(Order entity) {
+    public OrderResponse entityToResponse(Order entity, DriverResponse driver) {
         if (entity == null) return null;
         
         return new OrderResponse(
@@ -25,9 +27,17 @@ public class OrderMapper {
                 entity.getStatus(),
                 entity.getOrigin(),
                 entity.getDestination(),
-                entity.getIdDriver(),
+                driverResponseToDatosDriver(driver),
                 entity.getCreatedAt(),
                 entity.getUpdatedAt()
         );
     }
+    
+    private DatosDriver driverResponseToDatosDriver(DriverResponse driver) {
+		if (driver == null) return null;
+		return new DatosDriver(
+				driver.id(),
+				driver.name(),
+				driver.licenseNumber());
+	}
 }

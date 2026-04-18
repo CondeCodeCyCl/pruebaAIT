@@ -21,7 +21,7 @@ import com.pruebaait.services.OrderService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/orders")
+@RequestMapping()
 @RequiredArgsConstructor
 @Validated
 public class OrderController{

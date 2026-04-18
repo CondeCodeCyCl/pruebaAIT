@@ -34,26 +34,34 @@ public class OrderServiceImpl implements OrderService {
 		
 	    DriverResponse driver = driverClient.getDriverById(request.idDriver());
 
-	   // Validamos que el conductor este activo.
 	    if (driver == null || Boolean.FALSE.equals(driver.active())) {
-	        throw new IllegalArgumentException("El conductor no está activo o no existe");
+	        throw new IllegalStateException("El conductor no está activo o no existe");
 	    }
-
+	    
 		Order order = orderMapper.requestToEntity(request);
-		
+				
 		order.setStatus(Status.CREATED); // Estado al crear por default es CREATED
 		order.setCreatedAt(LocalDateTime.now());
 		order.setUpdatedAt(LocalDateTime.now());
 
 		log.info("Order registrado existosamente: {}", order);
-		return orderMapper.entityToResponse(orderRepository.save(order));
+		
+		Order savedOrder = orderRepository.save(order);
+		
+		driverClient.updateDriverStatus(driver.id(), false);
+		return orderMapper.entityToResponse(savedOrder, driver);
 	}
 
 	@Override
 	public List<OrderResponse> getAllOrders() {
 		log.info("Listado de todos los orders solicitadas");
 
-		return orderRepository.findAll().stream().map(orderMapper::entityToResponse).collect(Collectors.toList());
+		return orderRepository.findAll()
+				.stream()
+				.map(order -> orderMapper.entityToResponse(
+						order, 
+						obtenerDriverResponse(order.getIdDriver())))
+				.collect(Collectors.toList());
 	}
 
 	@Override
@@ -61,8 +69,10 @@ public class OrderServiceImpl implements OrderService {
 		log.info("Obtener order por id solicitado");
 
 		Order order = obtenerOrderOException(id);
+		
+		DriverResponse driver = driverClient.getDriverById(order.getIdDriver());
 
-		return orderMapper.entityToResponse(order);
+		return orderMapper.entityToResponse(order,driver);
 	}
 
 	private Order obtenerOrderOException(UUID id) {
@@ -84,30 +94,31 @@ public class OrderServiceImpl implements OrderService {
 
 		order.setUpdatedAt(LocalDateTime.now());
 		
-		// 🚨 SI LA ORDEN TERMINA, LIBERAMOS AL CONDUCTOR
 	    if (newStatus == Status.DELIVERED || newStatus == Status.CANCELLED) {
 	        driverClient.updateDriverStatus(order.getIdDriver(), true);
 	    }
 
 		log.info("Status actualizado exitosamente");
-		return orderMapper.entityToResponse(order);
+	 	DriverResponse driver = driverClient.getDriverById(order.getIdDriver());
+		
+	 	return orderMapper.entityToResponse(order,driver);
 	}
 
 	private void cambioStatus(Status statusActual, Status statusNuevo) {
 		switch (statusActual) {
 		case CREATED:
 			if (statusNuevo != Status.IN_TRANSIT && statusNuevo != Status.CANCELLED) {
-				throw new IllegalArgumentException("Una orden CREATED solo puede pasar a IN_TRANSIT o CANCELLED");
+				throw new IllegalStateException("Una orden CREATED solo puede pasar a IN_TRANSIT o CANCELLED");
 			}
 			break;
 		case IN_TRANSIT:
 			if (statusNuevo != Status.DELIVERED && statusNuevo != Status.CANCELLED) {
-				throw new IllegalArgumentException("Una orden IN_TRANSIT solo puede pasar a DELIVERED o CANCELLED");
+				throw new IllegalStateException("Una orden IN_TRANSIT solo puede pasar a DELIVERED o CANCELLED");
 			}
 			break;
 		case DELIVERED:
 		case CANCELLED:
-			throw new IllegalArgumentException(
+			throw new IllegalStateException(
 					"No se puede cambiar el estado de una orden finalizada a :" + statusActual);
 		}
 	}
@@ -117,7 +128,11 @@ public class OrderServiceImpl implements OrderService {
 
 		List<Order> ordersEntity = orderRepository.findByStatus(status);
 
-		return ordersEntity.stream().map(orderMapper::entityToResponse).collect(Collectors.toList());
+		return ordersEntity.stream()
+				.map(order -> orderMapper.entityToResponse(
+						order, 
+						obtenerDriverResponse(order.getIdDriver())))
+					.collect(Collectors.toList());
 	}
 
 	@Override
@@ -126,7 +141,11 @@ public class OrderServiceImpl implements OrderService {
 
 		List<Order> ordersEntity = orderRepository.findByOriginContainingIgnoreCase(origin);
 
-		return ordersEntity.stream().map(orderMapper::entityToResponse).collect(Collectors.toList());
+		return ordersEntity.stream()
+				.map(order -> orderMapper.entityToResponse(
+						order, 
+						obtenerDriverResponse(order.getIdDriver())))
+				.collect(Collectors.toList());
 	}
 
 	@Override
@@ -135,7 +154,11 @@ public class OrderServiceImpl implements OrderService {
 
 		List<Order> ordersEntity = orderRepository.findByDestinationContainingIgnoreCase(destination);
 
-		return ordersEntity.stream().map(orderMapper::entityToResponse).collect(Collectors.toList());
+		return ordersEntity.stream()
+				.map(order -> orderMapper.entityToResponse(
+						order, 
+						obtenerDriverResponse(order.getIdDriver())))
+				.collect(Collectors.toList());
 	}
 
 	@Override
@@ -144,7 +167,11 @@ public class OrderServiceImpl implements OrderService {
 
 		List<Order> ordersEntity = orderRepository.findByStatus(status);
 
-		return ordersEntity.stream().map(orderMapper::entityToResponse).collect(Collectors.toList());
+		return ordersEntity.stream()
+				.map(order -> orderMapper.entityToResponse(
+						order, 
+						obtenerDriverResponse(order.getIdDriver())))
+				.collect(Collectors.toList());
 	}
 
 	@Override
@@ -157,7 +184,13 @@ public class OrderServiceImpl implements OrderService {
 
 	    return orderRepository.findByCreatedAtBetween(inicio, fin)
 	            .stream()
-	            .map(orderMapper::entityToResponse)
+	            .map(order -> orderMapper.entityToResponse(
+						order, 
+						obtenerDriverResponse(order.getIdDriver())))
 	            .collect(Collectors.toList());
+	}
+	
+	private DriverResponse obtenerDriverResponse(UUID idDriver) {
+			return driverClient.getDriverById(idDriver);
 	}
 }
