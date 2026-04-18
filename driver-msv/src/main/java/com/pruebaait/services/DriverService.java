@@ -13,6 +13,7 @@ public interface DriverService{
     
     void updateDriverStatus(UUID id, Boolean status);
 
-
-    List<DriverResponse> getAllDrivers();
+    List<DriverResponse> getAllDriversActives();
+    
+    List <DriverResponse> getAllDrivers();
 }

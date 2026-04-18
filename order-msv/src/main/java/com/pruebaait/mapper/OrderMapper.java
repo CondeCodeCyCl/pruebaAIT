@@ -1,5 +1,6 @@
 package com.pruebaait.mapper;
 import org.springframework.stereotype.Component;
+
 import com.pruebaait.commons.dto.driver.DatosDriver;
 import com.pruebaait.commons.dto.driver.DriverResponse;
 import com.pruebaait.commons.dto.orders.OrderRequest;
@@ -14,7 +15,7 @@ public class OrderMapper {
         return Order.builder()
                 .origin(request.origin())
                 .destination(request.destination())
-    			    .idDriver(request.idDriver())
+    			  //  .idDriver(request.idDriver())
 
                 .build();
     }

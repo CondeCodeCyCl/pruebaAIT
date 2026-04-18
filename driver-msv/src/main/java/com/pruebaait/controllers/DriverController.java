@@ -18,7 +18,7 @@ import com.pruebaait.services.DriverService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping()
+@RequestMapping("/api/drivers")
 @RequiredArgsConstructor
 @Validated
 public class DriverController {
@@ -26,11 +26,17 @@ public class DriverController {
 	private final DriverService driverService;
 	
 	
-    @GetMapping()
+    @GetMapping("/activesDrivers")
     public ResponseEntity<List<DriverResponse>> getActiveDrivers() {
-        List<DriverResponse> responses = driverService.getAllDrivers();
+        List<DriverResponse> listar = driverService.getAllDriversActives();
         
-        return ResponseEntity.ok(responses);
+        return ResponseEntity.ok(listar);
+    }
+    
+    @GetMapping()
+    public ResponseEntity<List<DriverResponse>> getAllDrivers(){
+    		List<DriverResponse> listar = driverService.getAllDrivers();
+    		return ResponseEntity.ok(listar);
     }
     
     @GetMapping("/{id}")

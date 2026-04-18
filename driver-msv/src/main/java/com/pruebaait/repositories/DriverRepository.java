@@ -7,8 +7,6 @@ import com.pruebaait.entities.Driver;
 
 @Repository
 public interface DriverRepository extends JpaRepository<Driver, UUID> {
-	// ¡Aquí aprovechamos la magia de Spring Data JPA!
-    // El examen pide: "Listar todos los conductores activos". 
-    // Solo con escribir este nombre de método, Spring crea la consulta SQL por debajo:
+	//buscamos lista de activos.
     List<Driver> findByActiveTrue();
 }

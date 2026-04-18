@@ -9,5 +9,4 @@ class DriverMsvApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }

@@ -9,6 +9,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -47,6 +48,14 @@ public class Order {
     @Column()
     private LocalDateTime updatedAt;
     
-	@Column(name = "ID_DRIVER", nullable = false)
+	@Column(name = "ID_DRIVER", nullable = true)
     private UUID idDriver;
+	
+	@Lob
+	@Column(name = "file_pdf")
+	private byte[] filePdf;
+
+	@Lob
+	@Column(name = "file_image")
+	private byte[] fileImage;
 }

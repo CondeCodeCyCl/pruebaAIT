@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.pruebaait.commons.dto.orders.OrderRequest;  
 import com.pruebaait.commons.dto.orders.OrderResponse;
 import com.pruebaait.commons.enums.Status;
@@ -21,7 +24,7 @@ import com.pruebaait.services.OrderService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping()
+@RequestMapping("/api/orders")
 @RequiredArgsConstructor
 @Validated
 public class OrderController{
@@ -71,6 +74,16 @@ public class OrderController{
 	public ResponseEntity<OrderResponse> updateStatus(@PathVariable UUID id, @RequestParam Status status) {
 
 		return ResponseEntity.ok(orderService.updateOrderStatus(id, status));
+	}
+	
+	@PostMapping(value = "/{id}/assign", consumes = {"multipart/form-data"})
+	public ResponseEntity<OrderResponse> asignarConductor(
+			@PathVariable UUID id,
+			@RequestParam UUID idDriver,
+			@RequestPart MultipartFile pdf,
+			@RequestPart MultipartFile image) {
+		
+		return ResponseEntity.ok(orderService.asignarConductor(id, idDriver, pdf, image));
 	}
 
 }

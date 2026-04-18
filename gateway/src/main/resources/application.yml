@@ -1,33 +1,30 @@
-spring:
- application:
-  name: gateway
-
- cloud:
-  loadbalancer:
-   enabled: true
-
-  gateway:
-   server:
-    webflux:
-     routes:
-      - id: msv-driver
-        uri: lb://msv-driver
-        predicates:
-         - Path=/api/drivers/**
-        #filters:
-         #- StripPrefix=2
-
-      - id: msv-order
-        uri: lb://msv-order
-        predicates:
-         - Path=/api/orders/**
-        #filters:
-         #- StripPrefix=2
-
 server:
- port: 8090
+  port: 8090
 
 eureka:
- client:
-  service-url:
-   defaultZone: http://localhost:8761/eureka
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    loadbalancer:
+      cache:
+        enabled: false # 👈 ¡OJO! Esto te salva del error 503
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: driver-msv
+              uri: lb://DRIVER-MSV
+              predicates:
+                - Path=/api/drivers/**
+              # 🚨 SIN FILTROS STRIPPREFIX AQUÍ
+
+            - id: order-msv
+              uri: lb://ORDER-MSV
+              predicates:
+                - Path=/api/orders/**
+              # 🚨 SIN FILTROS STRIPPREFIX AQUÍ

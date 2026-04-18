@@ -35,7 +35,7 @@ public class DriverServiceImpl implements DriverService{
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<DriverResponse> getAllDrivers() {
+	public List<DriverResponse> getAllDriversActives() {
 		log.info("Listado de todos los conductores activos solicitados");
 
 	    return driverRepository.findByActiveTrue() 
@@ -43,8 +43,20 @@ public class DriverServiceImpl implements DriverService{
 	            .map(driverMapper::entityToResponse) 
 	            .collect(Collectors.toList());
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<DriverResponse> getAllDrivers() {
+		log.info("Listado de todos los conductores solicitados");
+
+		return driverRepository.findAll()
+				.stream()
+				.map(driverMapper::entityToResponse)
+				.collect(Collectors.toList());
+	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public DriverResponse getDriverById(UUID id) {
 		log.info("Obtener order por id solicitado");
 
