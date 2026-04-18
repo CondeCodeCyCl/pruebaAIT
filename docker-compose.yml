@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  eureka-server:
+    build: ./EurekaServer
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - ait-network
+
+  gateway:
+    build: ./gateway
+    container_name: api-gateway
+    ports:
+      - "8090:8090"
+    depends_on:
+      - eureka-server
+    networks:
+      - ait-network
+
+  driver-msv:
+    build: ./driver-msv
+    container_name: driver-msv
+    ports:
+      - "8081:8081"
+    depends_on:
+      - eureka-server
+    networks:
+      - ait-network
+
+  order-msv:
+    build: ./order-msv
+    container_name: order-msv
+    ports:
+      - "8082:8082"
+    depends_on:
+      - eureka-server
+    networks:
+      - ait-network
+
+# Creamos una red interna para que los contenedores se comuniquen por su nombre
+networks:
+  ait-network:
+    driver: bridge
