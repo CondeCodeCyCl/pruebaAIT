@@ -7,6 +7,6 @@ import com.pruebaait.entities.Driver;
 
 @Repository
 public interface DriverRepository extends JpaRepository<Driver, UUID> {
-	//buscamos lista de activos.
+	
     List<Driver> findByActiveTrue();
 }

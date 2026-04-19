@@ -36,16 +36,9 @@ public class OrderServiceImpl implements OrderService {
 	public OrderResponse createOrder(OrderRequest request) {
 		log.info("Registrando nueva orden: {}", request);
 
-		/*
-		 * DriverResponse driver = driverClient.getDriverById(request.idDriver());
-		 * 
-		 * if (driver == null || Boolean.FALSE.equals(driver.active())) { throw new
-		 * IllegalStateException("El conductor no está activo o no existe"); }
-		 */
-
 		Order order = orderMapper.requestToEntity(request);
 
-		order.setStatus(Status.CREATED); // Estado al crear por default es CREATED
+		order.setStatus(Status.CREATED);
 		order.setCreatedAt(LocalDateTime.now());
 		order.setUpdatedAt(LocalDateTime.now());
 
@@ -53,8 +46,8 @@ public class OrderServiceImpl implements OrderService {
 
 		Order savedOrder = orderRepository.save(order);
 
-		// driverClient.updateDriverStatus(driver.id(), false);
-		return orderMapper.entityToResponse(savedOrder, null/* driver */);
+		
+		return orderMapper.entityToResponse(savedOrder, null);
 	}
 
 	@Override
@@ -206,7 +199,7 @@ public class OrderServiceImpl implements OrderService {
 			throw new IllegalStateException("El conductor no existe o no está activo");
 		}
 
-		// 3. VALIDACIÓN DE FORMATO (Lo que me pediste)
+		// Validación de formatos PDF y IMAGEN
 	    if (pdf == null || pdf.isEmpty() || !pdf.getContentType().equals("application/pdf")) {
 	        throw new IllegalArgumentException("El archivo debe ser un PDF válido");
 	    }
@@ -219,7 +212,8 @@ public class OrderServiceImpl implements OrderService {
 	    }
 
 	    try {
-	        // 4. GUARDADO EN BASE DE DATOS (Lo que me pediste)
+	    	
+	        //Guardamos en la base de datos
 	        order.setFilePdf(pdf.getBytes());
 	        order.setFileImage(image.getBytes());
 	        log.info("Archivos convertidos a bytes y listos para persistir");
