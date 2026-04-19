@@ -1,20 +1,20 @@
 # Prueba Técnica AIT
 
-Este ecosistema de microservicios está desarrollado con **Java 17** y **Spring Boot 3**, diseñado para la gestión de conductores y órdenes de transporte. Incluye una arquitectura robusta de microservicios con servidor de descubrimiento y puerta de enlace centralizada.
+Este ecosistema de microservicios está desarrollado con **Java** y **Spring Boot**, diseñado para la gestión de conductores y órdenes de transporte.
 
 ## Arquitectura del Sistema
 * **Eureka Server:** Servidor de descubrimiento (Puerto: 8761).
 * **API Gateway:** Punto de entrada único (Puerto: 8090).
 * **Driver MSV:** Gestión de conductores y disponibilidad (Puerto: 8081).
-* **Order MSV:** Gestión de órdenes de entrega (Puerto: 8082).
+* **Order MSV:** Gestión de órdenes de transporte (Puerto: 8082).
 * **Commons DTO:** Librería compartida para modelos y excepciones.
 
-## 🛠️ Tecnologías Utilizadas
+## Tecnologías Utilizadas
 * **Backend:** Java 17 & Spring Boot 3.5.x
+* **Documentación** Spring Doc (Swagger)
 * **Contenerización:** Docker & Docker Compose
-* **Base de Datos:** Oracle Database
+* **Base de Datos:** Oracle Database (DRIVER y ORDERS)
 * **Comunicación:** OpenFeign & Eureka Discovery Service
-* **Herramientas:** Maven, Lombok, Spring Doc (Swagger)
 
 ## Guía de Despliegue
 
