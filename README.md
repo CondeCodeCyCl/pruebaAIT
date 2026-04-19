@@ -11,7 +11,11 @@ Este ecosistema de microservicios está desarrollado con **Java** y **Spring Boo
 
 ## Tecnologías Utilizadas
 * **Backend:** Java 17 & Spring Boot 3.5.x
-* **Documentación** Spring Doc (Swagger)
+* **Documentación** Spring Doc Swagger
+* http://localhost:8081/swagger-ui/index.html#/
+* http://localhost:8082/swagger-ui/index.html#/
+* **Postman** Pruebas de cada método en Postman
+* https://www.postman.com/carlosworkspace/workspace/prueba-ait
 * **Contenerización:** Docker & Docker Compose
 * **Base de Datos:** Oracle Database (DRIVER y ORDERS)
 * **Comunicación:** OpenFeign & Eureka Discovery Service
@@ -29,11 +33,3 @@ cd commons-dto && ./mvnw clean install -DskipTests && cd ..
 
 # Una vez hecho esto para desplgar en docker hacer este comando
 docker-compose up -d --build
-
----
-
-
-1.  **Sección de Requisitos:** Le dice al evaluador qué necesita tener instalado antes de empezar.
-2.  **URLs de Swagger:** Esto es **clave**. Los reclutadores aman ver la documentación de Swagger interactiva; les permite probar tu API en 2 segundos sin abrir Postman.
-3.  **URLs de Eureka:** Para que el evaluador compruebe que tus microservicios realmente se están comunicando entre sí.
-4.  **Separación de pasos:** Separamos la compilación del despliegue para que el flujo sea más claro.
