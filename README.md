@@ -11,11 +11,8 @@ Este ecosistema de microservicios está desarrollado con **Java** y **Spring Boo
 
 ## Tecnologías Utilizadas
 * **Backend:** Java 17 & Spring Boot 3.5.x
-* **Documentación** Spring Doc Swagger
-* http://localhost:8081/swagger-ui/index.html#/
-* http://localhost:8082/swagger-ui/index.html#/
-* **Postman** Pruebas de cada método en Postman
-* https://www.postman.com/carlosworkspace/workspace/prueba-ait
+* **Documentación** Spring Doc Swagger http://localhost:8081/swagger-ui/index.html#/  y  http://localhost:8082/swagger-ui/index.html#/
+* **Postman** Pruebas de cada método en Postman https://www.postman.com/carlosworkspace/workspace/prueba-ait
 * **Contenerización:** Docker & Docker Compose
 * **Base de Datos:** Oracle Database (DRIVER y ORDERS)
 * **Comunicación:** OpenFeign & Eureka Discovery Service
